@@ -38,72 +38,79 @@
 </head>
 
 <body ng-controller="svgCtrl">
-    <svg width="{{size.width}}" height="{{size.height}}" ng-model="size">
-      <text rotate="{{rotate}}" transform="{{transform}}" x="{{position.x}}" y="{{position.y}}" textLength="{{length}}" fill="{{color}}" font-size="{{fontSize}}" font-family="'Raleway', sans-serif" show-svg></text>
-    </svg>
+    <show-svg></show-svg>
+
     <label for="">
       text:
-    <input type="text" ng-model="content" />
+    <input type="text" ng-model="svg.content" />
     </label>
     <label for="">
       font length:
-    <input type="text" ng-model="length" />
+    <input type="text" ng-model="svg.length" />
     </label>
     <label for="">
       font size:
-    <input type="text" ng-model="fontSize" />
+    <input type="text" ng-model="svg.fontSize" />
     </label>
     <label for="">
       svg width:
-    <input type="text" ng-model="size.width" />
+    <input type="text" ng-model="svg.size.width" />
     </label>
     <label for="">
       svg height:
-    <input type="text" ng-model="size.height" />
+    <input type="text" ng-model="svg.size.height" />
     </label>
     <label for="">
       transform:
-    <input type="text" ng-model="transform" />
+    <input type="text" ng-model="svg.transform" />
     </label>
     <label for="">
       rotate:
-    <input type="text" ng-model="rotate" />
+    <input type="text" ng-model="svg.rotate" />
     </label>
     <label for="">
         X:
-    <input type="text" ng-model="position.x" />
+    <input type="text" ng-model="svg.position.x" />
     </label>
     <label for="">
         Y:
-    <input type="text" ng-model="position.y" />
+    <input type="text" ng-model="svg.position.y" />
     </label>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js" svg></script>
     <script>
         var app = angular.module('svg', []);
-
         app.controller('svgCtrl', ['$scope', function($scope) {
-            $scope.content = 'SVG is Fun';
-            $scope.length = '220';
-            $scope.color = '#006600';
-            $scope.fontSize = '20';
-            $scope.size = {
-                'width': 220,
-                'height': 20
+            $scope.svg = {
+                content : 'SVG is Fun',
+                length : '220',
+                color : '#006600',
+                fontSize : '20',
+                size : {
+                    'width': 220,
+                    'height': 20
+                },
+                position : {
+                    'x': 0,
+                    'y': 20
+                },
+                transform : "rotate(0)",
+                rotate : "0"
             };
-            $scope.position = {
-                'x': 0,
-                'y': 20
-            }
-            $scope.transform = "rotate(0)";
             //   $scope.rotate = "20,0,5,30,10,50,5,10,65,5";
-            $scope.rotate = "0";
         }])
-        .directive('showSvg', function() {
+        .directive('showSvg', ['$rootScope', '$compile', function($rootScope, $compile) {
             return {
-                template: '{{content}}'
+                restrict: 'E',
+                replace: true,
+                controller: 'svgCtrl',
+                scope: true,
+                scope: {
+                    svg: '='
+                },
+                templateUrl: 'svg.html'
             };
-        });
+        }]);
     </script>
 </body>
 
